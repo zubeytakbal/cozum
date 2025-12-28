@@ -38,74 +38,26 @@ class ChaosToOrderScene(Scene):
             )
         
         # ===== NOKTALARIN OLUŞUMU (0:15 - 0:30) =====
-        # Rastgele konumlarda noktalar belirir
+        # Rastgele konumlarda noktalar belirir (tek ifade ile grup oluşturma)
         
-        # İlk grup: 10 nokta
-        dots_group_1 = VGroup()
-        for _ in range(10):
-            x = random.uniform(-6, 6)
-            y = random.uniform(-3, 3)
-            dot = Dot(point=[x, y, 0], color=WHITE, radius=0.05)
-            dots_group_1.add(dot)
-        
-        # İkinci grup: 20 nokta
-        dots_group_2 = VGroup()
-        for _ in range(20):
-            x = random.uniform(-6, 6)
-            y = random.uniform(-3, 3)
-            dot = Dot(point=[x, y, 0], color=WHITE, radius=0.05)
-            dots_group_2.add(dot)
-        
-        # Üçüncü grup: 70 nokta
-        dots_group_3 = VGroup()
-        for _ in range(70):
-            x = random.uniform(-6, 6)
-            y = random.uniform(-3, 3)
-            dot = Dot(point=[x, y, 0], color=WHITE, radius=0.05)
-            dots_group_3.add(dot)
-        
-        # LaggedStart ile noktaları sırayla belirir
-        # İlk 10 nokta (5 saniye içinde)
-        self.play(
-            LaggedStart(*[FadeIn(dot) for dot in dots_group_1], lag_ratio=0.5),
-            run_time=5
-        )
-        
-        # Sonraki 20 nokta (5 saniye içinde)
-        self.play(
-            LaggedStart(*[FadeIn(dot) for dot in dots_group_2], lag_ratio=0.25),
-            run_time=5
-        )
-        
-        # Son 70 nokta (5 saniye içinde)
-        self.play(
-            LaggedStart(*[FadeIn(dot) for dot in dots_group_3], lag_ratio=0.07),
-            run_time=5
-        )
+        # Noktaları tek ifade ile oluştur: (miktar, lag_ratio) çiftleri
+        for count, lag in [(10, 0.5), (20, 0.25), (70, 0.07)]:
+            self.play(
+                LaggedStart(*[FadeIn(Dot(point=[random.uniform(-6, 6), random.uniform(-3, 3), 0], color=WHITE, radius=0.05)) for _ in range(count)], lag_ratio=lag),
+                run_time=5
+            )
         
         # ===== SİNEMATİK YAZI (0:30 - 0:50) =====
-        # "KAOS..." yazısı belirir
-        text_kaos = Text("KAOS...", font_size=72, color=WHITE)
-        text_kaos.move_to(ORIGIN)
-        
-        # Yavaşça belirir (3 saniye)
-        self.play(FadeIn(text_kaos, shift=UP*0.5), run_time=3)
-        
-        # 2 saniye ekranda kalır
-        self.wait(2)
-        
-        # Kaybolur (2 saniye)
-        self.play(FadeOut(text_kaos, shift=DOWN*0.5), run_time=2)
-        
-        # "...DÜZENİ DOĞURABİLİR Mİ?" yazısı belirir
-        text_duzen = Text("...DÜZENİ DOĞURABİLİR Mİ?", font_size=48, color=WHITE)
-        text_duzen.move_to(ORIGIN)
-        
-        # Yavaşça belirir (3 saniye)
-        self.play(FadeIn(text_duzen, shift=UP*0.5), run_time=3)
-        
-        # Son kare için 10 saniye bekle (Section 4 toplam: 20 saniye)
-        self.wait(10)
+        # Yazıları tek ifade ile oluştur ve animasyon yap
+        for text, size, fade_in, wait, fade_out in [
+            ("KAOS...", 72, 3, 2, 2),
+            ("...DÜZENİ DOĞURABİLİR Mİ?", 48, 3, 10, 0)
+        ]:
+            text_obj = Text(text, font_size=size, color=WHITE).move_to(ORIGIN)
+            self.play(FadeIn(text_obj, shift=UP*0.5), run_time=fade_in)
+            self.wait(wait)
+            if fade_out > 0:
+                self.play(FadeOut(text_obj, shift=DOWN*0.5), run_time=fade_out)
         
         # NOT: Daha fazla geliştirme için:
         # - Ses eklemek için: self.add_sound("ses_dosyasi.mp3")
