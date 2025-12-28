@@ -104,7 +104,7 @@ class ChaosToOrderScene(Scene):
         # Yavaşça belirir (3 saniye)
         self.play(FadeIn(text_duzen, shift=UP*0.5), run_time=3)
         
-        # Son kare için 10 saniye bekle (toplam 20 saniye için)
+        # Son kare için 10 saniye bekle (Section 4 toplam: 20 saniye)
         self.wait(10)
         
         # NOT: Daha fazla geliştirme için:
