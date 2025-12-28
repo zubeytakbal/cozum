@@ -25,7 +25,7 @@ class ChaosToOrderScene(Scene):
         # Ekranın ortasında parlak beyaz bir nokta belirir
         center_dot = Dot(point=ORIGIN, color=WHITE, radius=0.1)
         
-        # Nokta belirir (FadeIn)
+        # Nokta belirir (FadeIn) - 1 saniye
         self.play(FadeIn(center_dot), run_time=1)
         
         # Pulse (nefes alma) efekti - nokta büyüyüp küçülür
@@ -33,7 +33,7 @@ class ChaosToOrderScene(Scene):
         for _ in range(3):
             self.play(
                 center_dot.animate.scale(2),
-                run_time=1.5,
+                run_time=3,
                 rate_func=there_and_back
             )
         
@@ -104,8 +104,8 @@ class ChaosToOrderScene(Scene):
         # Yavaşça belirir (3 saniye)
         self.play(FadeIn(text_duzen, shift=UP*0.5), run_time=3)
         
-        # Son kare için 5 saniye bekle
-        self.wait(5)
+        # Son kare için 10 saniye bekle (toplam 20 saniye için)
+        self.wait(10)
         
         # NOT: Daha fazla geliştirme için:
         # - Ses eklemek için: self.add_sound("ses_dosyasi.mp3")
